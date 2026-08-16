@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenEscrow - AI-Powered Escrow on GenLayer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #E37DF7 0%, #9B6AF6 50%, #110FFF 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { font-size: 3rem; margin-bottom: 1rem; text-align: center; }
+        .subtitle { font-size: 1.25rem; text-align: center; margin-bottom: 3rem; opacity: 0.9; }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        h2 { font-size: 1.75rem; margin-bottom: 1rem; }
+        .contract-address {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            word-break: break-all;
+            margin: 1rem 0;
+        }
+        .btn {
+            display: inline-block;
+            background: white;
+            color: #110FFF;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #00FF66;
+        }
+        .feature h3 { margin-bottom: 0.5rem; }
+        .test-case {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .status-released { color: #00FF66; font-weight: bold; }
+        .status-refunded { color: #FF2B2B; font-weight: bold; }
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 GenEscrow</h1>
+        <p class="subtitle">AI-Powered Escrow on GenLayer - Trust without Intermediaries</p>
+
+        <div class="card">
+            <h2>📋 Contract Details</h2>
+            <p><strong>Network:</strong> GenLayer Testnet Bradbury</p>
+            <p><strong>Contract Address:</strong></p>
+            <div class="contract-address">
+                0x8aa44994aFa5229E17CC18D0845E3Ff896dfB966
+            </div>
+            <a href="https://studio.genlayer.com" class="btn" target="_blank">
+                Open in GenLayer Studio →
+            </a>
+            <a href="https://github.com/hoveiser/genesrow" class="btn" target="_blank">
+                View Source Code →
+            </a>
+            <a href="https://explorer-studio.genlayer.com/address/0x8aa44994aFa5229E17CC18D0845E3Ff896dfB966" class="btn" target="_blank">
+                View on Explorer →
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>🎯 What is GenEscrow?</h2>
+            <p>GenEscrow is a decentralized escrow smart contract that uses <strong>AI validators</strong> to adjudicate disputes between freelancers and clients. No human middlemen, no delays, no trust required.</p>
+            
+            <div class="feature">
+                <h3>✅ How it works:</h3>
+                <p>1. Client creates escrow and deposits GEN tokens</p>
+                <p>2. Freelancer delivers work (provides URL)</p>
+                <p>3. Client approves → funds released to freelancer</p>
+                <p>4. If dispute → AI validators fetch the deliverable URL, inspect content, and vote APPROVED or REFUNDED</p>
+                <p>5. Consensus reached → funds released or refunded automatically</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🧪 Test Results</h2>
+            
+            <div class="test-case">
+                <h3>Test Case 1: Valid Deliverable</h3>
+                <p><strong>Job:</strong> Write a short article about GenLayer</p>
+                <p><strong>URL:</strong> <code>https://hoveiser.github.io/hoveiser-genlayer-spinner/</code></p>
+                <p><strong>Amount:</strong> 20 GEN</p>
+                <p><strong>AI Verdict:</strong> APPROVED</p>
+                <p><strong>Final Status:</strong> <span class="status-released">RELEASED</span> ✅</p>
+                <p>AI validators fetched the URL, confirmed the deliverable matched the description, and released funds to the freelancer.</p>
+            </div>
+
+            <div class="test-case">
+                <h3>Test Case 2: Invalid Deliverable (404)</h3>
+                <p><strong>Job:</strong> Build a React Native mobile app</p>
+                <p><strong>URL:</strong> <code>https://this-url-does-not-exist-404.example.com/fake-app</code></p>
+                <p><strong>Amount:</strong> 100 GEN</p>
+                <p><strong>AI Verdict:</strong> REFUNDED (URL unreachable)</p>
+                <p><strong>Final Status:</strong> <span class="status-refunded">REFUNDED</span> ✅</p>
+                <p>Contract detected DNS failure, automatically refunded client. Robust error handling.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🚀 How to Use</h2>
+            <p>1. Go to <a href="https://studio.genlayer.com" style="color: white;" target="_blank">GenLayer Studio</a></p>
+            <p>2. Load the contract using the address above</p>
+            <p>3. Call <code>create_escrow(freelancer, job_description, deliverable_url, amount)</code></p>
+            <p>4. Test the full flow: <code>mark_delivered</code> → <code>dispute</code> → <code>resolve</code></p>
+            <p>5. Watch AI validators adjudicate in real-time!</p>
+        </div>
+
+        <div class="card">
+            <h2>💡 Technical Highlights</h2>
+            <ul style="line-height: 1.8;">
+                <li>Built on GenLayer Bradbury testnet with real AI validators (Mistral, Gemini, Kimi)</li>
+                <li>Persistent state using <code>TreeMap</code> storage</li>
+                <li>AI-powered dispute resolution via <code>gl.nondet.exec_prompt</code></li>
+                <li>Robust error handling for unreachable URLs</li>
+                <li>Consensus-based adjudication using <code>gl.eq_principle.strict_eq</code></li>
+                <li>Production-ready with comprehensive testing</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>📚 Learn More</h2>
+            <p>GenLayer is the adjudication layer for the agentic economy - enabling AI agents to resolve disputes and make subjective decisions at machine speed.</p>
+            <a href="https://genlayer.com" class="btn" target="_blank">Visit GenLayer →</a>
+            <a href="https://docs.genlayer.com" class="btn" target="_blank">Read Documentation →</a>
+        </div>
+    </div>
+</body>
+</html>
