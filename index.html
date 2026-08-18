@@ -72,6 +72,7 @@
             font-family: 'Courier New', monospace;
             font-size: 0.875rem;
         }
+        a.verify { color: #00FF66; }
     </style>
 </head>
 <body>
@@ -86,6 +87,7 @@
             <div class="contract-address">
                 0xF2Dba0F446cc9D27156e516AaaBA46e7f48f28Ad
             </div>
+            <p><strong>Deploy TX:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0xdab843f9ecafeb6d44c6220b59272f1262fb912c36347c8f508d12c91205520e">0xdab843f9...205520e →</a></p>
             <a href="https://studio.genlayer.com" class="btn" target="_blank">
                 Open in GenLayer Studio →
             </a>
@@ -100,7 +102,7 @@
         <div class="card">
             <h2>🎯 What is GenEscrow?</h2>
             <p>GenEscrow is a decentralized escrow smart contract with <strong>real payable custody</strong> that uses <strong>AI validators</strong> to adjudicate disputes between freelancers and clients. No human middlemen, no delays, no trust required.</p>
-            
+
             <div class="feature">
                 <h3>✅ How it works:</h3>
                 <p>1. Client creates escrow and deposits real GEN tokens (payable)</p>
@@ -113,7 +115,7 @@
 
         <div class="card">
             <h2>🧪 Test Results (All on Bradbury with Real GEN)</h2>
-            
+
             <div class="test-case">
                 <h3>Test 1: Happy Path — Client Approves</h3>
                 <p><strong>Job:</strong> Happy path test without AI</p>
@@ -121,6 +123,7 @@
                 <p><strong>AI Verdict:</strong> CLIENT_APPROVED (no AI involved)</p>
                 <p><strong>Final Status:</strong> <span class="status-released">RELEASED</span> ✅</p>
                 <p>Client approved, 7 GEN transferred to freelancer on-chain.</p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x252b4efa68ee7a5321dc6303cc74c54355a7bf3d349c816c03073a62663a3808">approve tx →</a></p>
             </div>
 
             <div class="test-case">
@@ -131,6 +134,7 @@
                 <p><strong>AI Verdict:</strong> APPROVED</p>
                 <p><strong>Final Status:</strong> <span class="status-released">RELEASED</span> ✅</p>
                 <p>AI validators fetched the URL, confirmed the deliverable matched the description, and released funds.</p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x30d5fdea794b984e432718191e398dadf7ce7e343a5102d286b1005c50011193">resolve tx (AI verdict) →</a></p>
             </div>
 
             <div class="test-case">
@@ -141,6 +145,7 @@
                 <p><strong>AI Verdict:</strong> REFUNDED (DNS error)</p>
                 <p><strong>Final Status:</strong> <span class="status-refunded">REFUNDED</span> ✅</p>
                 <p>Contract detected DNS failure, automatically refunded client. Robust error handling.</p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x7fbb2a360a76ee881269eab28863efba50619d7332f71c8fe0c615590543f089">resolve tx (AI verdict) →</a></p>
             </div>
 
             <div class="test-case">
@@ -151,6 +156,7 @@
                 <p><strong>AI Verdict:</strong> REFUNDED</p>
                 <p><strong>Final Status:</strong> <span class="status-refunded">REFUNDED</span> ✅</p>
                 <p>AI validators fetched the deliverable, judged it does NOT match the job description, and refunded client.</p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0xcdeebf6a50ef184a9ecd02cdadbb061934286335c1f1488f88c410785e772f8a">resolve tx (AI verdict) →</a></p>
             </div>
         </div>
 
