@@ -1,6 +1,6 @@
 # 🔐 GenEscrow Frontend
 
-**Live demo page for GenEscrow - AI-Powered Escrow on GenLayer**
+**Live demo page for GenEscrow - AI-Powered Escrow with Real Payable Custody on GenLayer**
 
 ## 🌐 Live Demo
 
@@ -8,28 +8,28 @@
 
 ## 📋 About
 
-This is the landing page for **GenEscrow**, a decentralized escrow smart contract on GenLayer that uses AI validators to adjudicate disputes between freelancers and clients.
+This is the landing page for **GenEscrow**, a decentralized escrow smart contract on GenLayer that holds real GEN tokens (payable custody) and uses AI validators to adjudicate disputes between freelancers and clients.
 
 ## 🎯 Contract Details
 
-- **Network:** GenLayer Testnet Bradbury
-- **Contract Address:** `0x8aa44994aFa5229E17CC18D0845E3Ff896dfB966`
+- **Network:** GenLayer Testnet Bradbury (LIVE)
+- **Contract Address:** `0xF2Dba0F446cc9D27156e516AaaBA46e7f48f28Ad`
 - **Source Code:** [genesrow](https://github.com/hoveiser/genesrow)
-- **Explorer:** [View on GenLayer Explorer](https://explorer-studio.genlayer.com/address/0x8aa44994aFa5229E17CC18D0845E3Ff896dfB966)
+- **Explorer:** [View on GenLayer Explorer](https://explorer-studio.genlayer.com/address/0xF2Dba0F446cc9D27156e516AaaBA46e7f48f28Ad)
 
 ## 🧪 What's Inside
 
 The demo page showcases:
-- How GenEscrow works (state machine diagram)
-- Two real test cases with AI verdicts
+- How GenEscrow works (payable custody + AI adjudication)
+- Four real test cases on Bradbury (happy path, AI approve, AI refund x2)
 - Technical implementation details
 - Links to GenLayer Studio and documentation
 
 ## 🚀 How to Use GenEscrow
 
 1. Go to [GenLayer Studio](https://studio.genlayer.com)
-2. Load the contract using address `0x8aa44994aFa5229E17CC18D0845E3Ff896dfB966`
-3. Call `create_escrow(freelancer, job_description, deliverable_url, amount)`
+2. Load the contract using address `0xF2Dba0F446cc9D27156e516AaaBA46e7f48f28Ad`
+3. Call `create_escrow(freelancer, job_description, deliverable_url)` with GEN value
 4. Test the full flow: `mark_delivered` → `dispute` → `resolve`
 5. Watch AI validators adjudicate in real-time!
 
