@@ -73,11 +73,21 @@
             font-size: 0.875rem;
         }
         a.verify { color: #00FF66; }
+        .version-badge {
+            display: inline-block;
+            background: #00FF66;
+            color: #070707;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔐 GenEscrow</h1>
+        <h1>🔐 GenEscrow <span class="version-badge">v1.0.0</span></h1>
         <p class="subtitle">AI-Powered Escrow with Real Payable Custody on GenLayer</p>
 
         <div class="card">
@@ -85,16 +95,16 @@
             <p><strong>Network:</strong> GenLayer Testnet Bradbury (LIVE)</p>
             <p><strong>Contract Address:</strong></p>
             <div class="contract-address">
-                0xF2Dba0F446cc9D27156e516AaaBA46e7f48f28Ad
+                0x020BEbbFA37b421F44Cc14ED485467969454f82D
             </div>
-            <p><strong>Deploy TX:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0xdab843f9ecafeb6d44c6220b59272f1262fb912c36347c8f508d12c91205520e">0xdab843f9...205520e →</a></p>
+            <p><strong>Deployment history:</strong> v8.0 (safety tests) → v1.0.0 (stable, improved AI adjudication)</p>
             <a href="https://studio.genlayer.com" class="btn" target="_blank">
                 Open in GenLayer Studio →
             </a>
             <a href="https://github.com/hoveiser/genesrow" class="btn" target="_blank">
                 View Source Code →
             </a>
-            <a href="https://explorer-studio.genlayer.com/address/0xF2Dba0F446cc9D27156e516AaaBA46e7f48f28Ad" class="btn" target="_blank">
+            <a href="https://explorer-studio.genlayer.com/address/0x020BEbbFA37b421F44Cc14ED485467969454f82D" class="btn" target="_blank">
                 View on Explorer →
             </a>
         </div>
@@ -105,11 +115,12 @@
 
             <div class="feature">
                 <h3>✅ How it works:</h3>
-                <p>1. Client creates escrow and deposits real GEN tokens (payable)</p>
-                <p>2. Freelancer delivers work (provides URL)</p>
-                <p>3. Client approves → funds released to freelancer via on-chain transfer</p>
-                <p>4. If dispute → AI validators fetch the deliverable URL, inspect content, and vote APPROVED or REFUNDED</p>
-                <p>5. Consensus reached → funds released or refunded automatically</p>
+                <p>1. Client creates escrow with agreed acceptance criteria and deposits real GEN (payable)</p>
+                <p>2. Freelancer delivers work (URL + evidence hash, immutable)</p>
+                <p>3. Client approves → funds released via on-chain transfer</p>
+                <p>4. Client silent? → <code>timeout_release</code> frees funds to freelancer after the window</p>
+                <p>5. Dispute? → AI validators fetch the deliverable's visible text and vote APPROVED / REFUNDED</p>
+                <p>6. Losing party may appeal once → second AI round is final → <code>finalize</code> pays out</p>
             </div>
         </div>
 
@@ -118,54 +129,59 @@
 
             <div class="test-case">
                 <h3>Test 1: Happy Path — Client Approves</h3>
-                <p><strong>Job:</strong> Happy path test without AI</p>
-                <p><strong>Amount:</strong> 7 GEN</p>
+                <p><strong>Job:</strong> Round 1 corner case test</p>
+                <p><strong>Amount:</strong> 3 GEN</p>
                 <p><strong>AI Verdict:</strong> CLIENT_APPROVED (no AI involved)</p>
                 <p><strong>Final Status:</strong> <span class="status-released">RELEASED</span> ✅</p>
-                <p>Client approved, 7 GEN transferred to freelancer on-chain.</p>
-                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x252b4efa68ee7a5321dc6303cc74c54355a7bf3d349c816c03073a62663a3808">approve tx →</a></p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x8c30a2bebcb5e530feaa39f60a18f8f88e5965b198b7fbc7d1743fd9cebf2079">approve tx →</a></p>
             </div>
 
             <div class="test-case">
-                <h3>Test 2: AI Approves (Match)</h3>
-                <p><strong>Job:</strong> A web page that displays an animated spinner with GenLayer branding</p>
+                <h3>Test 2: AI Approves (Match) — v1.0.0</h3>
+                <p><strong>Job:</strong> A static HTML page displaying a rotating CSS spinner</p>
                 <p><strong>URL:</strong> <code>https://hoveiser.github.io/hoveiser-genlayer-spinner/</code></p>
-                <p><strong>Amount:</strong> 3 GEN</p>
+                <p><strong>Amount:</strong> 2 GEN</p>
                 <p><strong>AI Verdict:</strong> APPROVED</p>
                 <p><strong>Final Status:</strong> <span class="status-released">RELEASED</span> ✅</p>
-                <p>AI validators fetched the URL, confirmed the deliverable matched the description, and released funds.</p>
-                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x30d5fdea794b984e432718191e398dadf7ce7e343a5102d286b1005c50011193">resolve tx (AI verdict) →</a></p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x189be5b1b23e1bc358d74c6810d818c73b0ff66ce451eee0811dfa7936eeda65">resolve tx →</a> | <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x95f2a459b87a1daec1cf2fc3acea804dd69ae5231d73daee60319f795f82ef0e">finalize tx →</a></p>
             </div>
 
             <div class="test-case">
-                <h3>Test 3: AI Refunds (URL Unreachable)</h3>
-                <p><strong>Job:</strong> URL unreachable test</p>
-                <p><strong>URL:</strong> <code>https://no-such-domain-abc123.example.com/x</code></p>
-                <p><strong>Amount:</strong> 8 GEN</p>
-                <p><strong>AI Verdict:</strong> REFUNDED (DNS error)</p>
-                <p><strong>Final Status:</strong> <span class="status-refunded">REFUNDED</span> ✅</p>
-                <p>Contract detected DNS failure, automatically refunded client. Robust error handling.</p>
-                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x7fbb2a360a76ee881269eab28863efba50619d7332f71c8fe0c615590543f089">resolve tx (AI verdict) →</a></p>
-            </div>
-
-            <div class="test-case">
-                <h3>Test 4: AI Refunds (Mismatch)</h3>
+                <h3>Test 3: AI Refunds (Mismatch) — v1.0.0</h3>
                 <p><strong>Job:</strong> A Python backend API with Flask</p>
                 <p><strong>URL:</strong> <code>https://hoveiser.github.io/hoveiser-genlayer-spinner/</code> (HTML/CSS, NOT Flask)</p>
-                <p><strong>Amount:</strong> 9 GEN</p>
+                <p><strong>Amount:</strong> 6 GEN</p>
                 <p><strong>AI Verdict:</strong> REFUNDED</p>
                 <p><strong>Final Status:</strong> <span class="status-refunded">REFUNDED</span> ✅</p>
-                <p>AI validators fetched the deliverable, judged it does NOT match the job description, and refunded client.</p>
-                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0xcdeebf6a50ef184a9ecd02cdadbb061934286335c1f1488f88c410785e772f8a">resolve tx (AI verdict) →</a></p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x92284c49eb16343873fbca1501d7189e7631294426831d16e103fe4f02b6d81e">resolve tx →</a> | <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x895a4dad49ecd8037b5d2c3a8509cbdd83a3f6fa98004c7f94945658a8ab57ef">finalize tx →</a></p>
+            </div>
+
+            <div class="test-case">
+                <h3>Test 4: Retry + Timeout Refund (URL Unreachable)</h3>
+                <p><strong>URL:</strong> <code>https://no-such-domain-xyz123.example.com/x</code> (fake domain)</p>
+                <p><strong>Amount:</strong> 4 GEN</p>
+                <p><strong>AI Verdict:</strong> TIMEOUT_REFUNDED after 3 failed fetches + safety window</p>
+                <p><strong>Final Status:</strong> <span class="status-refunded">REFUNDED</span> ✅</p>
+                <p>No automatic payout on transient failures — 3 retries, then a timed safety window.</p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x60ba96a8f9e8f9e8a9cb28fd92c9784a791e52f6e2e62ce665c63510359a9889">3rd resolve tx →</a> | <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x9d1959ca0968260f57d3d1346fdab43b487f4eb11b8c1d5c92c74554adc5d3f0">timeout refund tx →</a></p>
+            </div>
+
+            <div class="test-case">
+                <h3>Test 5: Appeal + Final Round</h3>
+                <p><strong>Amount:</strong> 2 GEN</p>
+                <p><strong>Flow:</strong> resolve (round 1) → appeal by losing party → resolve (final) → finalize</p>
+                <p><strong>Final Status:</strong> <span class="status-refunded">REFUNDED</span> ✅</p>
+                <p>Appeal window enforced; second AI round is final.</p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x9e2b47644c50ccb5d9c129777ff67096dcb7b9c35c67921c7c32d9fdf76af9a6">appeal tx →</a> | <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x1b2d1d774c523fa36b6005cfd1dce598a03244abd16748ce75d273f34f2c5816">finalize tx →</a></p>
             </div>
         </div>
 
         <div class="card">
             <h2>🚀 How to Use</h2>
             <p>1. Go to <a href="https://studio.genlayer.com" style="color: white;" target="_blank">GenLayer Studio</a></p>
-            <p>2. Load the contract using the address above</p>
-            <p>3. Call <code>create_escrow(freelancer, job_description, deliverable_url)</code> with GEN value</p>
-            <p>4. Test the full flow: <code>mark_delivered</code> → <code>dispute</code> → <code>resolve</code></p>
+            <p>2. Paste the code from <code>contract.py</code> and deploy your own instance</p>
+            <p>3. Call <code>create_escrow(freelancer, description, criteria, approve_window, appeal_window)</code> with GEN value</p>
+            <p>4. Test flows: <code>mark_delivered</code> → <code>approve</code> | <code>dispute</code> → <code>resolve</code> → <code>appeal</code> → <code>finalize</code> | <code>timeout_release</code></p>
             <p>5. Watch AI validators adjudicate in real-time!</p>
         </div>
 
@@ -175,11 +191,13 @@
                 <li>Built on GenLayer Bradbury testnet with real AI validators (Mistral, Gemini, Kimi)</li>
                 <li><strong>Real payable custody</strong> via <code>@gl.public.write.payable</code></li>
                 <li>On-chain transfers via <code>gl_call_generic({'EthSend': ...})</code></li>
-                <li>AI-powered dispute resolution via <code>gl.nondet.exec_prompt</code></li>
-                <li>Consensus via <code>gl.eq_principle.strict_eq</code> on canonical verdicts</li>
-                <li>Robust error handling for unreachable URLs</li>
+                <li>Consensus-safe time via <code>gl.message_raw["datetime"]</code> for timeouts & appeal windows</li>
+                <li>AI adjudication on <strong>visible text</strong> (HTML/CSS stripped) via <code>gl.nondet.exec_prompt</code></li>
+                <li>Consensus via <code>gl.eq_principle.strict_eq</code> on canonical binary verdicts</li>
+                <li>Immutable freelancer-submitted evidence (URL + hash)</li>
+                <li>Retry (3 attempts) + safety windows — no automatic payout on transient failures</li>
+                <li>One-shot appeal with a final AI round</li>
                 <li>Authorization checks on every write method</li>
-                <li>Production-ready with comprehensive testing</li>
             </ul>
         </div>
 
