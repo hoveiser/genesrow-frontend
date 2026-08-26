@@ -87,37 +87,45 @@
 </head>
 <body>
     <div class="container">
-        <h1>🔐 GenEscrow <span class="version-badge">v1.0.0</span></h1>
-        <p class="subtitle">AI-Powered Escrow with Real Payable Custody on GenLayer</p>
+        <h1>🔐 GenEscrow <span class="version-badge">v1.1.1</span></h1>
+        <p class="subtitle">AI-Powered Escrow with Sealed Evidence Binding on GenLayer</p>
 
         <div class="card">
             <h2>📋 Contract Details</h2>
             <p><strong>Network:</strong> GenLayer Testnet Bradbury (LIVE)</p>
             <p><strong>Contract Address:</strong></p>
             <div class="contract-address">
-                0x020BEbbFA37b421F44Cc14ED485467969454f82D
+                0x74300cc91f3E13e65822b919060f270d2bCE4194
             </div>
-            <p><strong>Deployment history:</strong> v8.0 (safety tests) → v1.0.0 (stable, improved AI adjudication)</p>
-            <p><strong>v1.1.0:</strong> sealed evidence hash verification</p>
+            <p><strong>Deployment history:</strong> v8.0 (safety) → v1.0.0 (AI) → v1.1.0 (evidence binding) → v1.1.1 (sealed + clean)</p>
             <a href="https://studio.genlayer.com" class="btn" target="_blank">
                 Open in GenLayer Studio →
             </a>
             <a href="https://github.com/hoveiser/genesrow" class="btn" target="_blank">
                 View Source Code →
             </a>
-            <a href="https://explorer-studio.genlayer.com/address/0x020BEbbFA37b421F44Cc14ED485467969454f82D" class="btn" target="_blank">
+            <a href="https://explorer-studio.genlayer.com/address/0x74300cc91f3E13e65822b919060f270d2bCE4194" class="btn" target="_blank">
                 View on Explorer →
             </a>
         </div>
 
         <div class="card">
             <h2>🎯 What is GenEscrow?</h2>
-            <p>GenEscrow is a decentralized escrow smart contract with <strong>real payable custody</strong> that uses <strong>AI validators</strong> to adjudicate disputes between freelancers and clients. No human middlemen, no delays, no trust required.</p>
+            <p>GenEscrow is a decentralized escrow smart contract with <strong>real payable custody</strong> that uses <strong>AI validators</strong> to adjudicate disputes. The deliverable evidence is <strong>cryptographically sealed on-chain</strong> at delivery time and verified at adjudication time.</p>
+
+            <div class="feature">
+                <h3>🔏 Sealed Evidence Binding (v1.1.x):</h3>
+                <p>1. Freelancer submits deliverable URL at delivery</p>
+                <p>2. Contract fetches the URL, extracts visible text, computes sha256 hash, stores it on-chain</p>
+                <p>3. At adjudication, URL is fetched again and hash is verified</p>
+                <p>4. If hash matches → AI judges the content</p>
+                <p>5. If hash differs → <code>EVIDENCE_MISMATCH</code> verdict, automatic refund; live mutated content is never trusted</p>
+            </div>
 
             <div class="feature">
                 <h3>✅ How it works:</h3>
                 <p>1. Client creates escrow with agreed acceptance criteria and deposits real GEN (payable)</p>
-                <p>2. Freelancer delivers work (URL + evidence hash, immutable)</p>
+                <p>2. Freelancer delivers work (URL sealed with hash)</p>
                 <p>3. Client approves → funds released via on-chain transfer</p>
                 <p>4. Client silent? → <code>timeout_release</code> frees funds to freelancer after the window</p>
                 <p>5. Dispute? → AI validators fetch the deliverable's visible text and vote APPROVED / REFUNDED</p>
@@ -129,51 +137,57 @@
             <h2>🧪 Test Results (All on Bradbury with Real GEN)</h2>
 
             <div class="test-case">
-                <h3>Test 1: Happy Path — Client Approves</h3>
-                <p><strong>Job:</strong> Round 1 corner case test</p>
+                <h3>Test 1: Happy Path — Client Approves (v1.1.1)</h3>
+                <p><strong>Job:</strong> v1.1.1 clean test</p>
                 <p><strong>Amount:</strong> 3 GEN</p>
                 <p><strong>AI Verdict:</strong> CLIENT_APPROVED (no AI involved)</p>
                 <p><strong>Final Status:</strong> <span class="status-released">RELEASED</span> ✅</p>
-                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x8c30a2bebcb5e530feaa39f60a18f8f88e5965b198b7fbc7d1743fd9cebf2079">approve tx →</a></p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x79d3c7ccb4e45a5b0afa83caa4d4a4b419e609e8b10fb1e962d5754a4da8830a">approve tx →</a></p>
             </div>
 
             <div class="test-case">
-                <h3>Test 2: AI Approves (Match) — v1.0.0</h3>
+                <h3>Test 2: Evidence Mismatch — Page Mutated After Delivery (v1.1.0)</h3>
+                <p><strong>Job:</strong> Escrow demo page with test results</p>
+                <p><strong>URL:</strong> <code>https://hoveiser.github.io/genesrow-frontend/</code></p>
+                <p><strong>Amount:</strong> 5 GEN</p>
+                <p><strong>Flow:</strong> seal hash at delivery → mutate page → dispute → resolve</p>
+                <p><strong>AI Verdict:</strong> EVIDENCE_MISMATCH</p>
+                <p><strong>Final Status:</strong> <span class="status-refunded">REFUNDED</span> ✅</p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0xf493a42f8d6799836eb7b2338ea79af4b6190cf957288b0f3cb01264ed356d60">resolve tx →</a></p>
+            </div>
+
+            <div class="test-case">
+                <h3>Test 3: Dead URL Guard (v1.1.0)</h3>
+                <p><strong>URL:</strong> <code>https://no-such-domain-xyz123.example.com/x</code> (fake domain)</p>
+                <p><strong>Result:</strong> mark_delivered rejected with "not fetchable at delivery time"</p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x9d9859311d9da57f30f3e1f98830f81a0c3a111ddf20583f7e174fd2a9cd0464">mark_delivered tx →</a></p>
+            </div>
+
+            <div class="test-case">
+                <h3>Test 4: AI Approves (Match) — v1.0.0</h3>
                 <p><strong>Job:</strong> A static HTML page displaying a rotating CSS spinner</p>
                 <p><strong>URL:</strong> <code>https://hoveiser.github.io/hoveiser-genlayer-spinner/</code></p>
                 <p><strong>Amount:</strong> 2 GEN</p>
                 <p><strong>AI Verdict:</strong> APPROVED</p>
                 <p><strong>Final Status:</strong> <span class="status-released">RELEASED</span> ✅</p>
-                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x189be5b1b23e1bc358d74c6810d818c73b0ff66ce451eee0811dfa7936eeda65">resolve tx →</a> | <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x95f2a459b87a1daec1cf2fc3acea804dd69ae5231d73daee60319f795f82ef0e">finalize tx →</a></p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x189be5b1b23e1bc358d74c6810d818c73b0ff66ce451eee0811dfa7936eeda65">resolve tx →</a></p>
             </div>
 
             <div class="test-case">
-                <h3>Test 3: AI Refunds (Mismatch) — v1.0.0</h3>
-                <p><strong>Job:</strong> A Python backend API with Flask</p>
-                <p><strong>URL:</strong> <code>https://hoveiser.github.io/hoveiser-genlayer-spinner/</code> (HTML/CSS, NOT Flask)</p>
-                <p><strong>Amount:</strong> 6 GEN</p>
-                <p><strong>AI Verdict:</strong> REFUNDED</p>
-                <p><strong>Final Status:</strong> <span class="status-refunded">REFUNDED</span> ✅</p>
-                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x92284c49eb16343873fbca1501d7189e7631294426831d16e103fe4f02b6d81e">resolve tx →</a> | <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x895a4dad49ecd8037b5d2c3a8509cbdd83a3f6fa98004c7f94945658a8ab57ef">finalize tx →</a></p>
-            </div>
-
-            <div class="test-case">
-                <h3>Test 4: Retry + Timeout Refund (URL Unreachable)</h3>
+                <h3>Test 5: Retry + Timeout Refund (URL Unreachable)</h3>
                 <p><strong>URL:</strong> <code>https://no-such-domain-xyz123.example.com/x</code> (fake domain)</p>
                 <p><strong>Amount:</strong> 4 GEN</p>
                 <p><strong>AI Verdict:</strong> TIMEOUT_REFUNDED after 3 failed fetches + safety window</p>
                 <p><strong>Final Status:</strong> <span class="status-refunded">REFUNDED</span> ✅</p>
-                <p>No automatic payout on transient failures — 3 retries, then a timed safety window.</p>
-                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x60ba96a8f9e8f9e8a9cb28fd92c9784a791e52f6e2e62ce665c63510359a9889">3rd resolve tx →</a> | <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x9d1959ca0968260f57d3d1346fdab43b487f4eb11b8c1d5c92c74554adc5d3f0">timeout refund tx →</a></p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x9d1959ca0968260f57d3d1346fdab43b487f4eb11b8c1d5c92c74554adc5d3f0">timeout refund tx →</a></p>
             </div>
 
             <div class="test-case">
-                <h3>Test 5: Appeal + Final Round</h3>
+                <h3>Test 6: Appeal + Final Round</h3>
                 <p><strong>Amount:</strong> 2 GEN</p>
                 <p><strong>Flow:</strong> resolve (round 1) → appeal by losing party → resolve (final) → finalize</p>
                 <p><strong>Final Status:</strong> <span class="status-refunded">REFUNDED</span> ✅</p>
-                <p>Appeal window enforced; second AI round is final.</p>
-                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x9e2b47644c50ccb5d9c129777ff67096dcb7b9c35c67921c7c32d9fdf76af9a6">appeal tx →</a> | <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x1b2d1d774c523fa36b6005cfd1dce598a03244abd16748ce75d273f34f2c5816">finalize tx →</a></p>
+                <p><strong>Verify on Explorer:</strong> <a class="verify" target="_blank" href="https://explorer-studio.genlayer.com/tx/0x9e2b47644c50ccb5d9c129777ff67096dcb7b9c35c67921c7c32d9fdf76af9a6">appeal tx →</a></p>
             </div>
         </div>
 
@@ -183,19 +197,20 @@
             <p>2. Paste the code from <code>contract.py</code> and deploy your own instance</p>
             <p>3. Call <code>create_escrow(freelancer, description, criteria, approve_window, appeal_window)</code> with GEN value</p>
             <p>4. Test flows: <code>mark_delivered</code> → <code>approve</code> | <code>dispute</code> → <code>resolve</code> → <code>appeal</code> → <code>finalize</code> | <code>timeout_release</code></p>
-            <p>5. Watch AI validators adjudicate in real-time!</p>
+            <p>5. Watch AI validators adjudicate in real-time with sealed evidence verification!</p>
         </div>
 
         <div class="card">
             <h2>💡 Technical Highlights</h2>
             <ul style="line-height: 1.8;">
-                <li>Built on GenLayer Bradbury testnet with real AI validators (Mistral, Gemini, Kimi)</li>
+                <li>Built on GenLayer Bradbury testnet with real AI validators (Mistral, Gemini, Kimi, GPT-OSS)</li>
                 <li><strong>Real payable custody</strong> via <code>@gl.public.write.payable</code></li>
+                <li><strong>Sealed evidence binding:</strong> sha256 hash of visible text stored at delivery, verified at adjudication</li>
                 <li>On-chain transfers via <code>gl_call_generic({'EthSend': ...})</code></li>
                 <li>Consensus-safe time via <code>gl.message_raw["datetime"]</code> for timeouts & appeal windows</li>
                 <li>AI adjudication on <strong>visible text</strong> (HTML/CSS stripped) via <code>gl.nondet.exec_prompt</code></li>
                 <li>Consensus via <code>gl.eq_principle.strict_eq</code> on canonical binary verdicts</li>
-                <li>Immutable freelancer-submitted evidence (URL + hash)</li>
+                <li>Immutable freelancer-submitted evidence (URL + sealed hash)</li>
                 <li>Retry (3 attempts) + safety windows — no automatic payout on transient failures</li>
                 <li>One-shot appeal with a final AI round</li>
                 <li>Authorization checks on every write method</li>
