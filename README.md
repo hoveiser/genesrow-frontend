@@ -1,5 +1,10 @@
 # 🔐 GenEscrow — Frontend Demo
 
+> **DEPRECATED.** This static demo has been merged into the backend repository as a full
+> interactive React UI. The new home is `genesrow/frontend/` and the new live site is
+> https://hoveiser.github.io/genesrow/ . This repo is kept only so the existing Pages URL
+> keeps resolving; it is no longer the source of truth. See the notice added to `index.html`.
+
 Live demo site for **GenEscrow**, an AI-adjudicated escrow contract with authenticated artifacts, sealed evidence binding, and on-chain AI reasoning on GenLayer StudioNet (chain id 61999).
 
 - **Live demo:** https://hoveiser.github.io/genesrow-frontend/
