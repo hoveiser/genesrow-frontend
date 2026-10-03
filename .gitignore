@@ -1,0 +1,14 @@
+# Local secrets and environment
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node / editor / OS
+node_modules/
+.DS_Store
